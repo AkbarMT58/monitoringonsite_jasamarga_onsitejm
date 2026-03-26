@@ -554,10 +554,6 @@ class TimesheetController extends Controller
 
                         TimeSheet_Signatures::insert($timesheet_signatures);
 
-
-
-
-
                     }
 
                    
