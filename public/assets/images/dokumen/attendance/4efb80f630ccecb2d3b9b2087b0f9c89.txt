@@ -1,0 +1,6 @@
+hasil meet dengan mii bahasa csirt hihg risk:
+1.Penggunaan open source vulnerable.js dan css dimana web csirt menggunakan vue js
+  dianggap zap high risk karena by pass di jsnya, sebelumnya di awal menggunakan csp namun csp banyak terjadi ui modul2 dan css yang tidak berjalan jadi digunakan by pass
+Solusi :
+-penggunaaan license vulnerable js namun akan merombak semua ui di modul2 csirt
+-jika open source aplikasi running well namun zap tetap akan menunjukan warna merah, tim MII butuh waktu untuk research js yang tepat dan cocok untuk csirt namun masih sebatas diskusi

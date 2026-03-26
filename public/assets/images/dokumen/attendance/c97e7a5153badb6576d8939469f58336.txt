@@ -1,0 +1,14 @@
+
+report jumat kemaren 31 jan 2025
+
+Cek database sda_data memastikan tidak ada data yang tertinggal atau tidak terbaca di report
+Mengerjakan performa JM dan melanjutkan report JM - tgl 24 Jan
+Testing data siklus untuk cabang jakarta utara -selatan
+Bahas koordinasi transfer knowledge JM Innov dan JIMMS dengan MII
+
+report hari ini :
+1.Mengerjakan performa JM 2 feb 2025
+2.Mengerjakan report jm januari 2025
+3.Mengerjakan time sheet jm dan kuantum
+4.Menunggu informasi koordinasi transfer knowledge JMinnov dan Jimms dr JM
+5.Download download template dashboard laravel untuk keperluan pengembangan web 
