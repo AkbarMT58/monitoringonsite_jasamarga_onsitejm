@@ -129,36 +129,70 @@
   <tbody>
 
   <tr>
-     @foreach ($data as $app)
+    
+  @foreach ($data as $app)
+
+  
 
 
-    @if($app->ttd_karyawan==null)
+    @if(isset($app->ttd_karyawan))
 
-    $imagePath_employee==""
+    
+    @php
 
-
-
-    @else 
+    
     
     $imagePath_employee = 'assets/images/dokumen/signatures/'.$app->ttd_karyawan;
     $imageData_ = file_get_contents($imagePath_employee);
     $base64Image_ = base64_encode($imageData_);
     $imageUrl_karyawan = 'data:image/jpg;base64,' . $base64Image_;
 
+    
+  @endphp
+
+
+    @else 
+
+    
+    @php
+
+
+    
+    $imagePath_employee = "";
+
+    
+  @endphp
+
+    
+    
     @endif
+
+    
+
 
     @if($app->ttd_leader==null)
 
+    
+    @php
+
+
     $imagePath_spv_kuantum==""
+
+    @endphp
 
 
 
     @else 
 
+    
+    @php
+
     $imagePath_spv_kuantum = 'assets/images/dokumen/signatures/'.$app->ttd_leader;
     $imageData_kuantum = file_get_contents($imagePath_spv_kuantum);
     $base64Image_kuantum = base64_encode($imageData_kuantum);
     $imageUrl_spv_kuantum = 'data:image/jpg;base64,' . $base64Image_kuantum;
+
+    @endphp
 
     @endif
 
@@ -166,26 +200,44 @@
     
     @if($app->ttd_spv_onsite==null)
 
-    $imagePath_spv_onsite==""
+    @php
+
+    $imagePath_spv_onsite=="";
+
+    @endphp
 
     @else 
+
+    @php 
+
     $imagePath_spv_onsite = 'assets/images/dokumen/signatures/'.$app->ttd_spv_onsite;
     $imageData_spv_onsite= file_get_contents($imagePath_spv_onsite);
     $base64Image_spv_onsite = base64_encode($imageData_spv_onsite);
     $imageUrl_spv_onsite= 'data:image/jpg;base64,' . $base64Image_spv_onsite;
+
+    @endphp
 
     @endif
 
 
 @if($app->ttd_manajer_onsite==null)
 
+@php
+
     $imagePath_mnj_onsite==""
 
+@endphp
+
     @else 
+
+    
+@php
     $imagePath_mnj_onsite = 'assets/images/dokumen/signatures/'.$app->ttd_manajer_onsite;
     $imageData_mnj_onsite= file_get_contents($imagePath_mnj_onsite);
     $base64Image_mnj_onsite = base64_encode($imageData_mnj_onsite);
     $imageUrl_mnj_onsite= 'data:image/jpg;base64,' . $base64Image_mnj_onsite;
+
+@endphp
 
     @endif
 

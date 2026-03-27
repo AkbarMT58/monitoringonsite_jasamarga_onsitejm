@@ -308,8 +308,6 @@ class TimesheetController extends Controller
 
         $data_=Timesheet::selectRaw(" id,employee_id,tanggal_timesheet,plan_activity as description")
         ->whereRaw("STR_TO_DATE(tanggal_timesheet, '%d-%m-%Y') >=  ".$tanggal_dari." and "."STR_TO_DATE(tanggal_timesheet, '%d-%m-%Y') <= ".$tanggal_ke)
-    
-       
         ->get();
 
      

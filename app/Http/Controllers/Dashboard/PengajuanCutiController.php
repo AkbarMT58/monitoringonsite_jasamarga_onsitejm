@@ -292,7 +292,7 @@ class PengajuanCutiController extends Controller
 
         $row = (int) request('row', 10);
 
-        $data_=Cuti::selectRaw("
+        $data=Cuti::selectRaw("
 
          pengajuan_cuti_onsite.id,pengajuan_cuti_onsite.employee_id,pengajuan_cuti_onsite.jumlah_pengajuan_cuti,pengajuan_cuti_onsite.sisa_cuti,pengajuan_cuti_onsite.alasan_cuti,pengajuan_cuti_onsite.keterangan,pengajuan_cuti_onsite.dateFrom,pengajuan_cuti_onsite.dateTo,pengajuan_cuti_onsite.mengetahui_karyawan,pengajuan_cuti_onsite.mengetahui_leader,pengajuan_cuti_onsite.mengetahui_spv_vendor,pengajuan_cuti_onsite.mengetahui_spv_onsite,pengajuan_cuti_onsite.mengetahui_manajer_onsite
         ,
@@ -303,9 +303,11 @@ class PengajuanCutiController extends Controller
 
         then (select ttd_link from data_signatures  where kategori_jabatan='2' limit 1  )
         
-        when (pengajuan_cuti_onsite.mengetahui_karyawan='2' and pengajuan_cuti_onsite.employee_id='3' )
+      
+		when (pengajuan_cuti_onsite.mengetahui_karyawan='1' and pengajuan_cuti_onsite.employee_id='1' )
 
-        then (select ttd_link from data_signatures  where kategori_jabatan='2' limit 1  )
+        then (select ttd_link from data_signatures  where kategori_jabatan='1' limit 1  )
+
         
 		when (pengajuan_cuti_onsite.mengetahui_karyawan='1' and pengajuan_cuti_onsite.employee_id='1' )
 
@@ -313,8 +315,6 @@ class PengajuanCutiController extends Controller
 
       
         else '0'
-
-   
 
         end as ttd_karyawan,
 
@@ -353,6 +353,8 @@ class PengajuanCutiController extends Controller
         ->get();
 
         $data = [
+
+            'data'=>$data,
 
             'kode_pt_'=>$jenis_pt,
            
@@ -444,7 +446,7 @@ class PengajuanCutiController extends Controller
 
                     // }
 
-                     $data_=Cuti::selectRaw("
+                     $data=Cuti::selectRaw("
 
          pengajuan_cuti_onsite.id,pengajuan_cuti_onsite.employee_id,pengajuan_cuti_onsite.jumlah_pengajuan_cuti,pengajuan_cuti_onsite.sisa_cuti,pengajuan_cuti_onsite.alasan_cuti,pengajuan_cuti_onsite.keterangan,pengajuan_cuti_onsite.dateFrom,pengajuan_cuti_onsite.dateTo,pengajuan_cuti_onsite.mengetahui_karyawan,pengajuan_cuti_onsite.mengetahui_leader,pengajuan_cuti_onsite.mengetahui_spv_vendor,pengajuan_cuti_onsite.mengetahui_spv_onsite,pengajuan_cuti_onsite.mengetahui_manajer_onsite
         ,
@@ -517,7 +519,7 @@ class PengajuanCutiController extends Controller
                             'title'               => "Pengajuan Cuti Online Onsite JM - " . $id,
                             'nama_karyawan'       => $employeeEmail[0]['name'],
                             'nik'                 => $employeeEmail[0]['nik'],
-                            'data'                => $data_,
+                            'data'                => $data,
                             'kode_pt_'            => $jenis_pt,
                             // 'gambar_logo'         => $gambar_logo,                           
                         ];

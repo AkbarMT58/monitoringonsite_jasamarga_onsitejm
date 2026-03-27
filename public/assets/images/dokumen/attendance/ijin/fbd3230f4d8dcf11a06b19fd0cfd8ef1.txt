@@ -1,0 +1,99 @@
+simanja ui : https://balsamiq.cloud/sgcfx98/pmar4z/rECF7
+
+cara backup mongodb di laptop file hrs dipindah ke c :
+mongorestore -d db_name /path/
+
+schedule run job laravel : * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+
+cara backup mysql dgn username n password :
+DBj4s4m4rg4!!!
+
+mysqldump -u usr_dev -p  -h 192.168.5.34  sda_data > C:\Users\AKBAR\Documents\backup_sda_data\server\monitoring_sda.sql
+
+mysqldump -u root –p  -h localhost  sda_data > C:\Users\AKBAR\Documents\backup_sda_data\sda_data.sql
+
+mysqldump -u root –p  -h localhost  sda_simanja > C:\Users\AKBAR\Documents\backup_sda_simanja\sda_simanja.sql
+
+mysqldump -u root -p  -h 10.1.3.20  silapmen > C:\Users\AKBAR\Documents\backup_silapmen_server\silapmen.sql
+
+mysqldump -u root –p  -h localhost  fingerprint_powernumber > C:\Users\AKBAR\Documents\backup_sda_data\sda_data.sql
+
+ethernet adapter bluetooth connection
+
+use sda_data;
+
+-- DELETE FROM jadwal_tim_satgas WHERE id > 0 
+
+ALTER TABLE jadwal_tim_satgas AUTO_INCREMENT=1; 
+password server satgas :DShnd0O15a9l%23
+
+
+
+project si manja link ui : https://balsamiq.cloud/sgcfx98/pmar4z/rECF7
+
+
+
+
+Untuk mengatur Gmail sebagai server SMTP, Anda memerlukan beberapa informasi dan pengaturan. Berikut adalah langkah-langkah dan detail yang perlu Anda ketahui:
+Informasi Server SMTP Gmail:
+
+    Alamat Server SMTP: smtp.gmail.com
+    Port:
+        465 (untuk SSL)
+        587 (untuk TLS) 
+    Enkripsi: SSL/TLS
+    Autentikasi: Ya, diperlukan
+    Nama Pengguna: Alamat email Gmail Anda (misalnya, namaanda@gmail.com)
+    Kata Sandi: Kata sandi Gmail Anda atau Kata Sandi Aplikasi (jika verifikasi 2 langkah diaktifkan) 
+
+Langkah-langkah Setting:
+
+    1. Aktifkan IMAP/POP3 di Gmail:
+        Masuk ke akun Gmail Anda.
+        Buka Pengaturan (ikon gerigi) > Lihat semua setelan.
+        Pilih tab "Teruskan dan POP/IMAP".
+        Aktifkan IMAP (atau POP3 jika Anda lebih suka).
+        Simpan perubahan. 
+
+2. Aktifkan Akses Aplikasi Kurang Aman (jika perlu):
+
+    Jika Anda menggunakan aplikasi pihak ketiga yang mungkin tidak mendukung keamanan modern, Anda mungkin perlu mengaktifkan akses aplikasi kurang aman di setelan akun Google Anda. Namun, disarankan untuk menggunakan Kata Sandi Aplikasi jika memungkinkan. 
+
+Buka halaman akses aplikasi kurang aman dan aktifkan. 
+
+3. Gunakan Kata Sandi Aplikasi (jika verifikasi 2 langkah diaktifkan):
+
+    Jika Anda telah mengaktifkan verifikasi 2 langkah di akun Gmail Anda, Anda perlu membuat Kata Sandi Aplikasi khusus untuk aplikasi yang akan menggunakan Gmail sebagai server SMTP. 
+
+Buka halaman kata sandi aplikasi. 
+Pilih "Mail" sebagai aplikasi dan nama perangkat yang sesuai. 
+Generate kata sandi dan catat. 
+
+4. Konfigurasi Klien Email/Aplikasi:
+
+    Buka pengaturan klien email atau aplikasi Anda.
+    Cari bagian pengaturan server SMTP.
+    Masukkan informasi yang diperlukan (alamat, port, enkripsi, autentikasi, nama pengguna, dan kata sandi). 
+
+Simpan pengaturan. 
+
+Contoh Pengaturan (umum):
+
+    Server SMTP: smtp.gmail.com
+    Port: 465 (SSL) atau 587 (TLS)
+    Keamanan: SSL/TLS
+    Nama Pengguna: namaanda@gmail.com
+    Kata Sandi: Kata sandi Gmail atau Kata Sandi Aplikasi 
+
+Penting:
+
+    Pastikan koneksi internet Anda stabil. 
+
+Periksa kembali pengaturan Anda untuk memastikan tidak ada kesalahan. 
+Jika Anda mengalami masalah, periksa kembali apakah aplikasi Anda mendukung jenis enkripsi yang digunakan. 
+Gmail memiliki batas pengiriman harian (sekitar 500 email untuk akun reguler), jadi perhatikan batas ini, terutama jika Anda menggunakan untuk keperluan bisnis. 
+
+Dengan mengikuti langkah-langkah ini, Anda dapat berhasil menggunakan Gmail sebagai server SMTP untuk mengirim email dari aplikasi atau klien email Anda. 
+
+
+sett generate pass mail: https://www.rumahweb.com/journal/cara-mengaktifkan-application-password-gmail/
