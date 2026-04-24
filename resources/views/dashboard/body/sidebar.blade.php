@@ -310,15 +310,15 @@
 
                 @if (auth()->user()->can('roles.menu'))
                 <li>
-                    <a href="#permission" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                    <a href="#settings" class="collapsed" data-toggle="collapse" aria-expanded="false">
                     <i class="ri-tools-fill"></i>                        
                     <span class="ml-3">Pengaturan</span>
                         <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="10 15 15 20 20 15"></polyline><path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
                         </svg>
                     </a>
-                    <ul id="permission" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle" style="">
-                        <li class="{{ Request::is(['permission', 'permission/create', 'permission/edit/*']) ? 'active' : '' }}">
+                    <ul id="settings" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle" style="">
+                        <li class="{{ Request::is(['settings', 'permission/create', 'permission/edit/*']) ? 'active' : '' }}">
                             <a href="{{ route('permission.index') }}">
                                 <i class="fa-solid fa-arrow-right"></i><span>Permissions</span>
                             </a>

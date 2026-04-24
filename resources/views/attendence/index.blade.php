@@ -15,8 +15,8 @@ $waktu = date("Y-m-d");
   /* styles for screens smaller than 600px wide */
 
     #create_absen{
-  margin-left:-250px;
-  margin-top:80px;
+  margin-left:-280px;
+  margin-top:450px;
 
     }
 
