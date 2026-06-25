@@ -21,6 +21,11 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# 5. Install dependencies without generating the autoloader yet
+RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
+
+
+
 # Set working directory
 WORKDIR /var/www
 
@@ -32,7 +37,7 @@ RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage
 
 # Add cron job line to crontab
-RUN echo "* * * * * cd /var/www && php artisan schedule:run >> /dev/null 2>&1" | crontab -
+RUN echo "* * * * * cd /var/www/monitoringonsite_jasamarga_onsitejm.git && php artisan schedule:run >> /dev/null 2>&1" | crontab -
 
 # Entrypoint script to start PHP-FPM and Cron
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
