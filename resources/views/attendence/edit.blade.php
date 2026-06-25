@@ -17,58 +17,46 @@
                         <h4 class="card-title">Onsite Attendance</h4>
                     </div>
                 </div>
+                
 
-               
-         <div class="clock">
-            <div class="clock__circle">
-               <div class="clock__rounder"></div>
-               <div class="clock__hour" id="clock-hour"></div>
-               <div class="clock__minutes" id="clock-minutes"></div>
-            </div>
+                <div class="row">
 
-            <div>
-               <div class="clock__date">
-                  <span class="clock__day-week" id="date-day-week"></span>
+                
 
-                  <div>
-                     <span class="clock__month" id="date-month"></span>
-                     <span class="clock__day" id="date-day"></span>
-                     <span class="clock__year" id="date-year"></span>
-                  </div>
-               </div>
+                 <div class="col-lg-4">
 
-               <div class="clock__text">
-                  <span class="clock__text-hour" id="text-hour"></span>
-                  <span class="clock__text-minutes" id="text-minutes"></span>
-                  <span class="clock__text-ampm" id="text-ampm"></span>
-               </div>
-            </div>
-         </div>
-      
+                </div>
 
-                <div class="card-body">
-                    <form action="{{ route('attendence.store') }}" method="POST">
-                    @csrf
-                        <!-- begin: Input Data -->
-                        <div class="row align-items-center">
-                            <div class="form-group col-md-6">
+                  <div class="col-lg-4">
+
+                </div>
+
+                <div class="col-lg-4">
+
+                <br>
+                <br>
+
+                  <a href="{{ route('attendence.create') }}" class="btn btn-primary add-list" id="create_absen"><i class="fas fa-plus mr-3"></i><i class="ri-time-line"></i> Absen Masuk</a>
+                </div>
+              </div>
+                <div    >
 
                             <div hidden>
                                 <label for="datepicker" >Tanggal <span class="text-danger">*</span></label>
                                 <input id="datepicker" class="form-control @error('date') is-invalid @enderror" name="date" value="{{ old('date', $date) }}" />
-                            </div>
+                            
                                 <br>
                                 <label for="datepicker">Pukul<span class="text-danger">*</span></label>
                                 <div class="input-group-text">
                                
-                                <div id="time"></div>
+                                <div id="time_ID"></div>
 
                               </div>
 
                               <label for="datepicker">Tanggal Sekarang<span class="text-danger">*</span></label>
                                 <div class="input-group-text">
                                
-                                <div id="tanggal_sekarang"></div>
+                                <div id="datepicker_create_"></div>
 
                               </div>
                                 @error('date')
@@ -78,7 +66,219 @@
                                 @enderror
                             </div>
 
-                            <div class="col-lg-12">
+
+
+
+               
+        
+                <div class="card-body" >
+                    <form action="{{ route('attendence.store') }}" method="POST">
+                    @csrf
+                        <!-- begin: Input Data -->
+
+                        <br>
+                        <br>
+        <div class="row">
+                    
+        @foreach ($attendences as $attendence)
+
+        
+                                            @php
+                                            
+                                            $terlambat=$attendence->terlambat;
+                                            $img_photo=$attendence->employee->photo;
+
+
+                                            @endphp
+
+                                          
+                
+          <div hidden> {{ $key = $loop->iteration  }} </div>
+
+        <div class="col-lg-6">
+
+            <div class="card card-block card-stretch card-height">
+                <div class="card-header d-flex justify-content-between">
+                    <div class="header-title">
+                        <h4 class="card-title">Absen</h4>
+                    </div>
+                    <div class="card-header-toolbar d-flex align-items-center">
+                        <div class="dropdown">
+                            <span class="dropdown-toggle dropdown-bg btn" id="dropdownMenuButton001"
+                                data-toggle="dropdown">
+                                This Month<i class="ri-arrow-down-s-line ml-1"></i>
+                            </span>
+                            <div class="dropdown-menu dropdown-menu-right shadow-none"
+                                aria-labelledby="dropdownMenuButton001">
+                                <a class="dropdown-item" href="#">Year</a>
+                                <a class="dropdown-item" href="#">Month</a>
+                                <a class="dropdown-item" href="#">Week</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+               
+                <div class="card-body">
+                    <h3>{{$attendence->employee->name}}</h3>
+                      <div class="card-img">
+        <!-- Placeholder Image -->
+        <!-- <i class="ri-image-line ri-3x" style="color: #888;"></i> -->
+       
+        <img src="{{$img_photo ? asset('assets/images/employees/'.$img_photo) : asset('assets/images/user/1.png')}}" class="avatar-100 rounded"  >
+    </div>
+    <div class="card-content">
+        <!-- Button with Remix Icon -->
+         <div class="row">
+            <div class="col-lg-6">
+                 <div class="input-group-text"  hidden>
+                            <input type="text" class="form-control" name="jam_masuk{{$key}}" id="waktu{{$key}}"  />
+                            <input type="text" class="form-control" name="id_karyawan{{$key}}" value="{{$attendence->id}}" />
+                 </div>
+                <div class="input-group-text" hidden >
+                <input type="text" class="form-control" id="late{{$key}}" name="jam_terlambat{{$key}}" readonly/>
+                </div>
+               
+
+        <a class="card-btn" style="font-weight:bold;color:black;"   >
+        <i class="ri-arrow-down-line"  > <label id="present{{$key}}" style="color:white;" ><i class="ri-time-line"></i> @if(empty($attendence->clock_in)){{'00:00:00:00'}}@else {{$attendence->clock_in}}@endif</label>
+        <br></i>
+        Absen Masuk
+        </a>
+          </div>
+           <div class="col-lg-6" >
+        <a  class="card-btn-out" style="font-weight:bold;" onclick="Clock_Out({{$attendence->id}},{{$attendence->employee_id}},{{$key}})">
+            <i class="ri-arrow-up-line" ><label id="present{{$key}}" style="color:white;" ><i class="ri-time-line"></i> @if(empty($attendence->clock_out)){{'00:00:00:00'}}@else {{$attendence->clock_out}}@endif</label></i>Absen Keluar
+            
+        </a>
+          </div>
+       </div>
+    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6">
+
+
+         <input type="hidden" name="employee_id[{{ $key }}]" value="{{ $attendence->id }}">
+
+           @if(!empty($attendence->keterangan))
+            <div class="card card-block card-stretch card-height card-ijin" >
+
+            @else
+
+               <div class="card card-block card-stretch card-height" >
+
+
+
+            @endif
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <div class="header-title">
+                        <h4 class="card-title">Ijin</h4>
+                    </div>
+                    <div class="card-header-toolbar d-flex align-items-center">
+                        <div class="dropdown">
+                            <span class="dropdown-toggle dropdown-bg btn" id="dropdownMenuButton002"
+                                data-toggle="dropdown">
+                                This Month<i class="ri-arrow-down-s-line ml-1"></i>
+                            </span>
+                            <div class="dropdown-menu dropdown-menu-right shadow-none"
+                                aria-labelledby="dropdownMenuButton002">
+                                <a class="dropdown-item" href="#">Yearly</a>
+                                <a class="dropdown-item" href="#">Monthly</a>
+                                <a class="dropdown-item" href="#">Weekly</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                     <h3>{{$attendence->employee->name}}</h3>
+                    <!-- <div id="layout1-chart-2" style="min-height: 360px;"></div> -->
+                      <div class="card-img">
+        <!-- Placeholder Image -->
+        <!-- <i class="ri-image-line ri-3x" style="color: #888;"></i> -->
+         <img class="avatar-100 rounded" src="{{ $img_photo ? asset('assets/images/employees/'.$img_photo) : asset('assets/images/user/1.png') }}" >
+
+    </div>
+    <div class="card-content">
+        <h3 class="card-name"></h3>
+        <!-- Button with Remix Icon -->
+         <div class="row">
+            <div class="col-lg-6">
+
+            @if(empty($attendence->keterangan))
+
+        <a  class="card-btn-sick" style="font-weight:bold;" >
+            <i class="ri-arrow-down-line"><label id="present{{$key}}" style="color:black;" ><i class="ri-time-line"></i> @if(empty($attendence->terlambat)){{'00:00:00:00'}}@else {{$attendence->terlambat}}@endif</label> Jam  Terlambat</i>
+        </a>
+
+        @else
+
+        {{''}}
+
+
+        @endif
+        
+        <input type="file" id="realInput{{$key}}" style="display:none;">
+      
+
+          </div>
+           <div class="col-lg-6">
+
+           @if(empty($attendence->keterangan  ))
+
+           <a  class="card-btn-ijin" id="btnIjin{{$key}}" style="font-weight:bold;" onclick="Buat_Alasan_Ijin({{$attendence->id}},{{$attendence->employee_id}},{{$key}})" >
+            <i class="ri-arrow-down-line"><label id="ijin{{$key}}" style="color:black;" ><i class="ri-time-line"></i></label>Ijin/Sakit</i>
+          </a>
+
+           @elseif(!empty($attendence->keterangan && empty($attendence->file_dokumen)))
+
+           <a  class="card-btn-sudah_ijin" id="btnIjin{{$key}}" style="font-weight:bold;"  >
+           <i class="ri-arrow-down-line"><label id="ijin{{$key}}" style="color:black;" ><i class="ri-time-line"></i></label>Ijin/Sakit</i>
+          </a>
+          <label style="font-weight:bold;">Keterangan : {{$attendence->keterangan}}</label>
+        
+           @else
+
+             <a class="card-btn-lampiran" href="{{asset('assets/images/dokumen')}}{{'/'}}{{'attendance/'}}{{$attendence->file_dokumen}}" target="blank_"  style="font-weight:bold;" onclick="Absent_Ijin({{$key}},{{$attendence->id}})" >
+            
+            <i class="ri-arrow-down-line"><label id="present{{$key}}" style="color:black;" ><i class="ri-time-line"></i> @if(empty($attendence->clock_out)){{$attendence->waktu_cetak}}@endif</label>Download Lampiran</i>
+            </a>
+
+           @endif
+        <input type="file" id="realInput{{$key}}" style="display:none;">
+        
+            
+
+      
+          </div>
+           
+
+       </div>
+
+        <div id="tampilkan_alasan_ijin{{$key}}"></div>
+                </div>
+            </div>
+            
+        </div>
+        
+
+</div>
+
+
+
+
+
+@endforeach
+
+
+
+
+
+
+
+                            <div class="col-lg-12" hidden>
                                 <div class="table-responsive rounded mb-3" >
                                     <table class="table mb-0" id="absenedit">
                                         <thead class="bg-white text-uppercase">
@@ -91,19 +291,11 @@
                                         <tbody class="ligth-body">
                                             @foreach ($attendences as $attendence)
 
-
                                             @php
                                             
                                             $terlambat=$attendence->terlambat;
 
-                                           
-
-                            
                                             @endphp
-
-
-                                            
-
 
                                           
                                             <tr>
@@ -155,7 +347,7 @@
 
                                                             <i class="ri-file-pdf-line"></i>
 
-                                                            <a href="{{asset('assets/images/dokumen')}}{{'/'}}{{'attendance/'}}{{$attendence->file_dokumen}}">
+                                                            <a href="{{asset('assets/images/dokumen')}}{{'/'}}{{'attendance/'}}{{$attendence->file_dokumen}}" target="blank_">
                                                            
 
                                                             Lampiran Ijin/Absen
@@ -238,15 +430,17 @@
                                                                     <input type="radio" id="leave{{ $key }}"   class="custom-control-input position-relative" style="height: 20px" value="keluar" disabled >
                                                                     <label class="custom-control-label" for="leave{{ $key }}" style="color:white;" >Terlambat </label>
                                                                     <br>
-                                                                    <label id="late{{$key}}"  style="color:white;" > <i class="ri-time-line"></i>  @if(empty($terlambat))
+                                                                    <label id="late{{$key}}"  style="color:white;" > <i class="ri-time-line"></i>  
+                                                                    
+                                                                    @if(empty($terlambat))
 
-                                            {{'-'}}
+                                                                    {{'-'}}
 
-                                            @else
+                                                                    @else
 
-                                             {{$attendence->terlambat}}
+                                                                    {{$attendence->terlambat}}
 
-                                            @endif jam
+                                                                    @endif jam
                                         
                                         </label>
                                                                 </div>
@@ -325,10 +519,6 @@
 </div>
 
 
-<script src="{{  asset('assets/js/clock.js') }}"></script>
-<link rel="stylesheet" href="{{ asset('assets/css/clock.css') }}">
-
-
 <script>
     $('#datepicker').datepicker({
         uiLibrary: 'bootstrap4',
@@ -338,7 +528,10 @@
 </script>
 
 <script >
-var span = document.getElementById('time');
+
+    
+
+var span = document.getElementById('time_ID');
 
 function time() {
   var d = new Date();
@@ -349,39 +542,82 @@ function time() {
     ("0" + h).substr(-2) + ":" + ("0" + m).substr(-2) + ":" + ("0" + s).substr(-2);
 
 
-
-//    if (span.textContent < "08:00:00"){
-
-//      $('.tampilkan_absen').html('');
-
-//     const tampilkan_clockin_now='<div class="input-group-text mx-2" style="background-color:green;"><input type="radio" id="clockin{{ $key }}" onclick="Clock_In({{$attendence->id}},{{$key}})" name="clock_in{{ $key }}" class="custom-control-input position-relative" style="height: 20px" value="masuk" {{ $attendence->status == "masuk" ? "checked" : "" }} ><br><label class="custom-control-label" for="present{{ $key }}" style="color:white;" > {{ $attendence->employee->name}} Masuk </label><br><br><label id="clockin{{$key}}" style="color:white;" >{{$attendence->clock_in}}</label></div>';
-//     $('.tampilkan_absen').append(tampilkan_clockin_now);
-
     
-//    }else{
-
-//      $('.tampilkan_absen').html('');
-
-//     const tampilkan_clockin_expired='<div class="input-group-text mx-2" style="background-color:green;"><input type="radio" id="clockin{{ $key }}" onclick="Clock_In({{$attendence->id}},{{$key}})" name="clock_in{{ $key }}" class="custom-control-input position-relative" style="height: 20px" value="masuk" {{ $attendence->status == "masuk" ? "checked" : "" }} ><br><label class="custom-control-label" for="present{{ $key }}" style="color:white;" > {{ $attendence->employee->name}} Masuk </label><br><br><label id="clockin{{$key}}" style="color:white;" >{{$attendence->clock_in}}</label></div>';
-//     $('.tampilkan_absen').append(tampilkan_clockin_expired);
+    
 
 
-//    }
 
 }
+
+
 
     
 
 
 setInterval(time, 1000);
 
-//akses clock in toleransi di bawah 1 jam 
+
+
+
+function simpan_ijin(id_attendance,employee_id,key_){
+
+ let alasan_absen=document.getElementById('reason'+key_).value;
+
+var url_current=document.URL;
+
+var tgl_id = url_current.split('/')[5];
+var tgl_now=tgl_id ;
+
+
+$.ajax({
+                url: `/employee/attendence/`+tgl_now + '/' + 'update_alasan_sakit',
+                dataType:"JSON",
+                type: "POST",
+                data:{
+                        "id_karyawan": employee_id,
+                        'id_att':id_attendance,
+                        'alasan_absen':alasan_absen,
+                        "_token":"{{ csrf_token()}}",
+
+                    },
+
+    success: function(response){
+            if(response.status=='200'){
+
+                            
+            toastr.success('Data Permintaan Ijin  Sukses!.Terima Kasih',{ fadeAway: 3000 });
+
+            // location.href="employees/attendence";
+
+            }else{
+
+                toastr.error('Data Permintaan Ijin Gagal Diproses, Melebihi toleransi waktu diberikan!.Terima Kasih',{ fadeAway: 3000 });
+
+
+
+            }
+
+
+    }
+
+
+
+    });
+
+//console.log("lihat data alasan absen:",alasan_absen);
+
+
+
+
+}
+
+
 
 
 
 function Clock_In(id_attendance_,id_karyawan,key_){
 
-    var time_live=document.getElementById('time').innerHTML;
+    var time_live=document.getElementById('time_ID').innerHTML;
     document.getElementById('waktu'+key_).value = ""
     document.getElementById('waktu'+key_).value+= time_live;
     var status_=document.getElementById('present'+key_).value;
@@ -414,20 +650,20 @@ function Clock_In(id_attendance_,id_karyawan,key_){
             }else{
 
                 $.ajax({
-    url: `/employee/attendence/`+tgl_now +'/' + id_attendance + '/' + 'update_attendance_masuk',
+                url: `/employee/attendence/`+tgl_now +'/' + id_attendance + '/' + 'update_attendance_masuk',
 
-    dataType:"JSON",
-    type: "POST",
-    data:{
-            "id_karyawan": kode_karyawan,
-            'jam_masuk':jam_masuk,
-            'jamterlambat':jam_terlambat,
-            'id_att':id_attendance,
-            'status':status_,
-        
-            "_token":"{{ csrf_token()}}",
+                dataType:"JSON",
+                type: "POST",
+                data:{
+                        "id_karyawan": kode_karyawan,
+                        'jam_masuk':jam_masuk,
+                        'jamterlambat':jam_terlambat,
+                        'id_att':id_attendance,
+                        'status':status_,
+                    
+                        "_token":"{{ csrf_token()}}",
 
-        },
+                    },
 
     success: function(response){
 
@@ -461,78 +697,14 @@ function Clock_In(id_attendance_,id_karyawan,key_){
 
    
 
+         }
 
 
 
-
-
-    
-let total_datatabel_absen="{{count($attendences)}}";
-
-console.log("lihat data total absen:",total_datatabel_absen);
-
-
-let currentDate_ = new Date().toJSON().slice(0, 10);
-
-for(var j=1;j < total_datatabel_absen+1;j++){
-
-
- let waktu_clock_in=document.getElementById('clockin'+j).textContent;
- let waktu_clock_out=document.getElementById('clockout'+j).textContent;
-
-
-
-
-if(waktu_clock_in===''){
-
-    waktu_clock_in_='00:00:00'
-    waktu_clock_out_='00:00:00'
-    
-
-   
-  
-
-
-}else{
-
-    waktu_clock_in_=waktu_clock_in  
-    waktu_clock_out_=waktu_clock_out
-
-   
-
-}
-
-var startTime = waktu_clock_in_;
-var endTime = waktu_clock_out_;
-
-console.log("lihat starttime:",startTime);
-console.log("lihat endtime:",endTime);
-
-
-   
-
-  console.log("lihat data total waktu kerja:",secondsToHMS(hmsToSeconds(endTime) - hmsToSectimeToDecimalonds(startTime))); //10:39:18
-
-  console.log("lihat convert ke jam:"+j,(secondsToHMS(hmsToSeconds(endTime) - hmsToSeconds(startTime))));
-
-  document.getElementById('late'+key_).innerHTML =timeToDecimal(secondsToHMS(hmsToSeconds(endTime) - hmsToSeconds(startTime)));
-
-
-
-
-}
-
-
-
-    //batas clock in
-
-
-
-}
-
+         
 function Clock_Out(id_attendance_,id_karyawan,key_){
 
-    var time_live=document.getElementById('time').innerHTML;
+    var time_live=document.getElementById('time_ID').innerHTML;
     document.getElementById('waktu'+key_).value = ""
     document.getElementById('waktu'+key_).value+= time_live;
     var status_=document.getElementById('leave'+key_).value;
@@ -555,7 +727,7 @@ function Clock_Out(id_attendance_,id_karyawan,key_){
     console.log("lihat jam total bekerja:",jam_terlambat_keluar);
 
     
-    var e = document.getElementById('tanggal_sekarang');
+    var e = document.getElementById('datepicker_create_');
     var text_datenow = e.innerText;
 
     console.log("lihat tanggal sekarang_:",text_datenow);
@@ -582,7 +754,7 @@ toastr.error('Data Permintaan Keluar Gagal,Jam Kerja < 8 Jam .Tidak dapat akses 
 
 else{
 
-    toastr.success('Data Permintaan Keluar Sukses!.Terima Kasih',{ fadeAway: 3000 });
+    // toastr.success('Data Permintaan Keluar Sukses!.Terima Kasih',{ fadeAway: 3000 });
 
 
 
@@ -609,6 +781,9 @@ else{
 
                                     
         toastr.success('Data Permintaan Keluar Sukses!.Terima Kasih',{ fadeAway: 3000 });
+        
+        location.href="/employee/attendence";
+
 
         $("#absenedit").load(location.href + " #absenedit");
 
@@ -632,261 +807,43 @@ else{
 
 }
 
+}
 
 
 
-    
-let total_datatabel_absen="{{count($attendences)}}";
+let count = 0;
 
-console.log("lihat data total absen:",total_datatabel_absen);
-
-
-let currentDate_ = new Date().toJSON().slice(0, 10);
-
-for(var j=1;j < total_datatabel_absen+1;j++){
+function Buat_Alasan_Ijin(id_attendance,id_karyawan,no_urut){
 
 
- let waktu_clock_in=document.getElementById('clockin'+j).textContent;
- let waktu_clock_out=document.getElementById('clockout'+j).textContent;
-
-
-
-
-if(waktu_clock_in===''){
-
-    waktu_clock_in_='00:00:00'
-    waktu_clock_out_='00:00:00'
-    
-
-   
+const display = document.getElementById("btnIjin"+no_urut);
   
+var tampilan_text_area='<label for="name"> Alasan Ijin <span class="text-danger">*</span></label><textarea type="text" placeholder="Isi Alasan Absen" class="form-control"  id="reason'+no_urut+'" required></textarea><br><a class="btn btn-success" onclick="simpan_ijin('+id_attendance+',{{$attendence->employee_id}},'+no_urut+')" >Ajukan Ijin</a>';
+
+document.getElementById('tampilkan_alasan_ijin'+no_urut).insertAdjacentHTML("beforeend",tampilan_text_area);
 
 
-}else{
+count = count === 0 ? 1 : 0;
 
-    waktu_clock_in_=waktu_clock_in  
-    waktu_clock_out_=waktu_clock_out
+    // display.innerHTML = `Clicks: ${count}`;
 
-   
+if(count == '0' ){
 
-}
-
-var startTime = waktu_clock_in_;
-var endTime = waktu_clock_out_;
-
-console.log("lihat starttime:",startTime);
-console.log("lihat endtime:",endTime);
-
-
-   
-
-  console.log("lihat data total waktu kerja:",secondsToHMS(hmsToSeconds(endTime) - hmsToSectimeToDecimalonds(startTime))); //10:39:18
-
-  console.log("lihat convert ke jam:"+j,(secondsToHMS(hmsToSeconds(endTime) - hmsToSeconds(startTime))));
-
-  document.getElementById('late'+key_).innerHTML =timeToDecimal(secondsToHMS(hmsToSeconds(endTime) - hmsToSeconds(startTime)));
-
-
+document.getElementById('tampilkan_alasan_ijin'+no_urut).textContent = "";
 
 }
-
-
-
-
-
-
-
-    //batas clock out 
-
 
 
     
-}
-
-
-
-function Keterlambatan(){
-
-    
-    var time_live=document.getElementById('time').innerHTML;
-    document.getElementById('waktu'+key_).value = ""
-    document.getElementById('waktu'+key_).value+= time_live;
-    var status_=document.getElementById('leave'+key_).value;
-
-    //fungsi ajax update clock out keluar kantor
-    var id_attendance=id_attendance_;
-    var kode_karyawan=id_karyawan;
-    var jam_terlambat=time_live;
-    var url_current=document.URL;
-
-    var tgl_id = url_current.split('/')[5];
-
-    var tgl_now=tgl_id ;
-
-    console.log("lihat url:",tgl_now);
-
-    $.ajax({
-    url: `/employee/attendence/`+tgl_now +'/' + id_attendance + '/' + 'update_terlambat',
-
-    dataType:"JSON",
-    type: "POST",
-    data:{
-            "id_karyawan": kode_karyawan,
-            'jam_keluar':jam_keluar,
-            'id_att':id_attendance,
-            'status':status_,
-        
-            "_token":"{{ csrf_token()}}",
-
-        },
-
-    success: function(response){
-
-
-                let type ="success";
-                let title = `Notification ${type}.`;
-                let description = `
-                    This is ${type} notification.
-                   
-                    <a style="text-decoration:none; color:#fff; font-weight:bold;" </a>
-                    `;
-                
-           
-                if(response.status=='200'){
-
-                    new Notify(title, description, type);
-
-                    $("#absenedit").load(location.href + " #absenedit");
-
-
-                }
-
-                    // console.log("lihat response data:",response);
-
-
-
-
-    }
-
-
-
-    });
+console.log(count);
 
 
 }
 
-function Absent(id_attendance_,id_karyawan,key_){
-
-$('#reason'+key_).remove();
-$('#simpan'+key_).remove();
-
-var time_live=document.getElementById('time').innerHTML;
-document.getElementById('waktu'+key_).value = "";
-document.getElementById('waktu'+key_).value+= time_live;
-
- var tampilkan_texbox='<input type="text" placeholder="Isi Alasan Absen" class="form-control" id="reason" name="reason" /><br><input type="file" id="file_alasan" name="file_alasan" class="form-control" /><br><a onclick="Batalkan_Ijin('+id_attendance_+','+id_karyawan+','+key_+')" class="btn btn-primary" id="simpan'+key_+'"'+' style="color:black;background-color:yellow;">Batal</a><a onclick="Update_Reason('+id_attendance_+','+id_karyawan+','+key_+')" class="btn btn-primary" id="simpan'+key_+'"'+' style="color:white;background-color:red;">Simpan</a>';
-
- document.getElementById('absent_reason'+key_).insertAdjacentHTML("beforeend",tampilkan_texbox);
-
-
-console.log("lihat waktu live on absent:",time_live);
-
-console.log("lihat waktu live on key:",key_);
-
-    
-}
-
-
-function Update_Reason(id_attendance_,id_karyawan,id_urut){
-
-
-    var time_live=document.getElementById('time').innerHTML;
- 
-    const files = document.querySelector('[type=file]').files;
-    const image_upload = new FormData();
-
-    let file = files;
-    
-
-    // var filename =file.name;
-    //          filename = filename.replace(/^.*[\\\/]/, '');
-
-    
-        image_upload.append('id_att', id_attendance_);
-        image_upload.append('file_alasan', file[0]);
-        image_upload.append('reason', document.getElementById('reason').value);
-        image_upload.append('_token', "{{csrf_token()}}");
-       
 
 
 
-    var object = {};
-    image_upload.forEach(function(value, key){
-        object[key] = value;
-    });
-    var json = JSON.stringify(object);
-
-    console.log("file alasan data:",file[0]);
-
-        
-
-    //fungsi ajax update clock out keluar kantor
-    var id_attendance=id_attendance_;
-    var kode_karyawan=id_karyawan;
-    var jam_keluar=time_live;
-    var url_current=document.URL;
-    var tgl_id = url_current.split('/')[5];
-    var tgl_now=tgl_id ;
-
-    // console.log("lihat url reason:",reason_);
-    // console.log("lihat file dokumen:",file_alasan);
-
-    $.ajax({
-                    url: `/employee/attendence/`+tgl_now +'/' + id_attendance + '/' + 'update_reason_absen',
-
-                    type: 'POST',
-                     data:image_upload,
-                     enctype: 'multipart/form-data',
-                    dataType: 'json',
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-
-  
-
-    success: function(response){
-
-       
-
-               
-           
-                if(response.status=='200'){
-
-                 
-                    toastr.success('Data Permintaan Absen atau Ijin Sukses Tersimpan!.Terima Kasih',{ fadeAway: 3000 });
-
-                    $("#absenedit").load(location.href + " #absenedit");
-
-
-                }
-
-                  
-
-
-
-    }
-
-
-
-    });
-
-
-
-
-
-
-}
-
+//akses clock in toleransi di bawah 1 jam 
 
 
 
@@ -909,35 +866,16 @@ function secondsToHMS(secs) {
 }   
 
 
-
-
-
 let today_ = new Date().toISOString().slice(0, 10)
 
 console.log("lihat today:",today_)
 
-document.getElementById('tanggal_sekarang').innerHTML = today_;
-
-
-function Batalkan_Ijin(id_attendance_,id_karyawan,id_urut){
-
-var tampilkan_texbox='<input type="radio" id="absent{{ $key }}" onclick="Absent('+id_attendance_+','+id_urut+')" name="absen{{ $key }}" class="custom-control-input position-relative" style="height: 20px" value="absen"   ><label class="custom-control-label"  style="color:white;" > <br><br>Ijin </label>';
-
-document.getElementById('absent_reason'+key_).insertAdjacentHTML("beforeend",tampilkan_texbox);
-
-
-
-
-
-}
-
-
-
-
-
-
+document.getElementById('datepicker_create_').innerHTML = today_;
 
 
 
   </script>
+
+  
+
 @endsection

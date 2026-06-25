@@ -23,9 +23,16 @@ const dateDayWeek = document.getElementById('date-day-week'),
       dateMonth = document.getElementById('date-month'),
       dateDay = document.getElementById('date-day'),
       dateYear = document.getElementById('date-year'),
+      dateYear_ = document.getElementById('date-year_'),
+      dateTahun_ = document.getElementById('date-tahun_'),
+
       textHour = document.getElementById('text-hour'),
       textMinutes = document.getElementById('text-minutes'),
-      textAmPm = document.getElementById('text-ampm')
+      textAmPm = document.getElementById('text-ampm'),
+
+      textHour_ = document.getElementById('text-hour_'),
+      textMinutes_ = document.getElementById('text-minutes_'),
+      textAmPm_ = document.getElementById('text-ampm_')
 
 const clockText = () =>{
    // We get the Date object
@@ -49,6 +56,8 @@ const clockText = () =>{
    dateMonth.innerHTML = `${months[month]}`
    dateDay.innerHTML = `${day}, `
    dateYear.innerHTML = year
+   dateYear_.innerHTML = year
+   dateTahun_.innerHTML=year
 
    // If hours is greater than 12 (afternoon), we subtract -12, so that it starts at 1 (afternoon)
    if(hh >= 12){
@@ -72,5 +81,26 @@ const clockText = () =>{
    if(mm < 10){mm = `0${mm}`}
 
    textMinutes.innerHTML = mm
+
+
+   // daerah edit attendance clock
+
+    textAmPm_.innerHTML = ampm
+
+   // When it is 0 hours (early morning), we tell it to change to 12 hours
+   if(hh == 0){hh = 12}
+
+   // If hours is less than 10, add a 0 (01,02,03...09)
+   if(hh < 10){hh = `0${hh}`}
+
+   textHour_.innerHTML = `${hh}:`
+
+   // If minutes is less than 10, add a 0 (01,02,03...09)
+   if(mm < 10){mm = `0${mm}`}
+
+   textMinutes_.innerHTML = mm
 }
 setInterval(clockText, 1000) // (Updates every 1s) 1000 = 1s
+
+
+

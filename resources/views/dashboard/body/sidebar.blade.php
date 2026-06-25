@@ -136,6 +136,16 @@
                        
 
                     </ul>
+                     <ul id="permission" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle" style="">
+                        <li class="{{ Request::is(['permission', 'permission/create', 'permission/edit/*']) ? 'active' : '' }}">
+                        <a href="{{ route('webjm') }}" class="svg-icon">
+                        <i class="fa-solid fa-users"></i>
+                        <span class="ml-3">Daftar Web JM</span>
+                    </a>
+                        </li>
+                       
+
+                    </ul>
                 </li>
               
               
@@ -224,8 +234,8 @@
                                 <i class="fa-solid fa-arrow-right"></i><span>Transfer Knowledge</span>
                             </a>
                         </li>
-                           <li class="{{ Request::is('tk') ? 'active' : '' }}">
-                            <a href="{{ route('tk') }}">
+                           <li class="{{ Request::is('database') ? 'active' : '' }}">
+                            <a href="{{ route('database') }}">
                                 <i class="fa-solid fa-arrow-right"></i><span>Database Backup JM</span>
                             </a>
                         </li>

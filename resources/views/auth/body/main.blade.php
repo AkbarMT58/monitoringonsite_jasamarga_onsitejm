@@ -11,6 +11,9 @@
         <link rel="stylesheet" href="{{ asset('assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/vendor/remixicon/fonts/remixicon.css') }}">
+        <!-- 1. Leaflet CSS Dependency -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
 
 
          <style>
@@ -22,6 +25,8 @@
 
         }
     </style> 
+
+     <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
     </head>
@@ -52,6 +57,8 @@
     <!-- App JavaScript -->
     <script src="{{ asset('assets/js/app.js') }}"></script>
       <script src="{{  asset('assets/js/jquery-3.5.1.min.js') }}" ></script> 
+       <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 
 </body>
 </html>

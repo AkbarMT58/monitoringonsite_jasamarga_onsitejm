@@ -63,9 +63,10 @@ class EmployeeController extends Controller
        
         if ($file = $request->file('photo')) {
             $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
-            $path = 'public/employees/';
+            $path = 'public/assets/images/employees/';
 
-            $file->storeAs($path, $fileName);
+            // $file->storeAs($path, $fileName);
+            $file->move(public_path($path), $fileName);
             $validatedData['photo'] = $fileName;
         }
 
@@ -117,15 +118,16 @@ class EmployeeController extends Controller
 
        
         if ($file = $request->file('photo')) {
-            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
-            $path = 'public/employees/';
+            $fileName = $file->getClientOriginalName();
+            $path = 'assets/images/employees/';
 
            
-            if($employee->photo){
-                Storage::delete($path . $employee->photo);
-            }
+            // if($employee->photo){
+            //     public_path::delete($path . $employee->photo);
+            // }
 
-            $file->storeAs($path, $fileName);
+            $file->move(public_path($path), $fileName);
+            
             $validatedData['photo'] = $fileName;
         }
 
@@ -134,7 +136,28 @@ class EmployeeController extends Controller
         return Redirect::route('employees.index')->with('success', 'Employee has been updated!');
     }
 
-  
+ public function update_late_absen($id,Request $request)
+    {
+
+    
+           date_default_timezone_set("Asia/Jakarta");
+           $waktu = date("d-m-Y-H:i:s");
+
+       
+        $validatedData=[
+
+        "acc_lead"=>$request->acc_absen,
+        "updated_at"=>$waktu
+
+
+        ];
+        Employee::where('id', $id)->update($validatedData);
+
+        
+        return response()->json(['data'=>$validatedData,'status'=> 200], 200);
+
+       
+    }
     public function destroy(Employee $employee)
     {
        

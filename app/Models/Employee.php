@@ -22,6 +22,7 @@ class Employee extends Model
         'vacation',
         'city',
         'annual_leave_total',
+         'acc_lead'
     ];
 
     public $sortable = [
@@ -30,6 +31,7 @@ class Employee extends Model
         'phone',
         'salary',
         'city',
+        'photo'
     ];
 
     protected $guarded = [

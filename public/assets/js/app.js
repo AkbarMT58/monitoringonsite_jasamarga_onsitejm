@@ -614,10 +614,133 @@ Index Of Script
       
     $(document).ready(function() {
 
-      var url="www.google.com";
-
-       document.getElementById('myDiv').src = url;
+      
+      
+// function updateTime() {
+//     const now = new Date(); // Gets the current date and time
     
+//     // Options for local time formatting
+//     const timeString = now.toLocaleTimeString(); 
+    
+//     // Inject the formatted time into the div
+//     document.getElementById('real-time-clock').innerHTML = timeString;
+// }
+
+// // Update the clock immediately on load, then every 1 second
+// updateTime();
+// setInterval(updateTime, 1000)
+
+
+
+function Simpan_ijin(id_attendance,employee_id,key_){
+
+ let alasan_absen=document.getelementByID('reason'+key_).value;
+// var url_current=document.URL;
+
+//     var tgl_id = url_current.split('/')[5];
+//     var tgl_now=tgl_id ;
+
+console.log("lihat data alasan absen:",alasan_absen);
+
+
+
+
+}
+
+
+function Clock_In(id_karyawan,key_,acc_lead){
+
+    var time_live=document.getElementById('time_ID').innerHTML;
+    var startTime=time_live;
+
+    var endTime = "08:00:00";
+    let jangka_waktu=timeToDecimal(secondsToHMS(hmsToSeconds(startTime) - hmsToSeconds(endTime)));
+    let acc_lead_absen_telat=acc_lead;
+
+    console.log("lihat acc lead:",acc_lead_absen_telat);
+
+    document.getElementById('waktu'+key_).value = "";
+    document.getElementById('waktu'+key_).value+= time_live;
+    document.getElementById('late'+key_).value = "";
+
+    
+    console.log("lihat jangka waktu saja:",(jangka_waktu));
+    console.log("lihat konversi detik:",secondsToHMS(hmsToSeconds(startTime)));
+
+
+    if(jangka_waktu < "0.5"  ){
+
+    
+        document.getElementById('late'+key_).value+= (timeToDecimal(secondsToHMS(hmsToSeconds(startTime) - hmsToSeconds(endTime))));
+        //var set_tombolsave_terkunci="<div class='mt-2' ><button type='submit' class='btn btn-primary'>Save</button><a href='{{ route('attendence.index') }}' class='btn btn-danger' >Cancel</a></div>";
+        var set_tombol_terkunci="<a  class='card-btn-save' style='font-weight:bold;color:white;'  ><i class='ri-arrow-down-line'><label id='present{{$key}}' style='color:black;'  ><i class='ri-save-line'></i></label></i>Simpan</a>";
+        
+        $('#tombol_save_terlambat'+key_).html('');
+
+        $('#tombol_save_terlambat'+key_).append(set_tombol_terkunci);
+
+    
+
+    }
+
+
+
+    
+    if(startTime < "08:00:00" ){
+
+        
+    document.getElementById('late'+key_).value+= (timeToDecimal(secondsToHMS(hmsToSeconds(startTime) - hmsToSeconds(endTime))));
+    //var set_tombolsave_terkunci="<div class='mt-2' ><button type='submit' class='btn btn-primary'>Save</button><a href='{{ route('attendence.index') }}' class='btn btn-danger' >Cancel</a></div>";
+    // $('#tombol_save').append(set_tombolsave_terkunci);
+     var set_tombol_terkunci="<a  class='card-btn-save' style='font-weight:bold;color:white;'  ><i class='ri-arrow-down-line'><label id='present{{$key}}' style='color:black;'  ><i class='ri-save-line'></i></label></i>Simpan</a>";
+     $('#tombol_save').append(set_tombol_terkunci);
+
+
+    //  submitToRoute();
+
+    }
+
+
+    if( acc_lead_absen_telat == '0' && (jangka_waktu) > "0.5" ){
+
+    toastr.error('Data Permintaan Masuk Gagal Diproses, Melebihi toleransi 15 menit waktu absen masuk yang diberikan!.Informasikan kedatangan masuk ke onsite untuk approval absen masuk.Terima Kasih',{ fadeAway: 5000 });
+    var set_tombolsave_terkunci="";
+
+    $('#tombol_save').append(set_tombolsave_terkunci);
+
+    }
+
+
+    if( acc_lead_absen_telat == '1' && (jangka_waktu) > "0.5" )
+    {
+
+    toastr.success('Data Permintaan Absen Masuk Berhasil Diproses, dan sudah diketahui lead vendor.Terima Kasih',{ fadeAway: 5000 });
+    var set_tombolsave_terkunci="";
+
+     document.getElementById('late'+key_).value+= (timeToDecimal(secondsToHMS(hmsToSeconds(startTime) - hmsToSeconds(endTime))));
+        //var set_tombolsave_terkunci="<div class='mt-2' ><button type='submit' class='btn btn-primary'>Save</button><a href='{{ route('attendence.index') }}' class='btn btn-danger' >Cancel</a></div>";
+    var set_tombol_terkunci="<button  class='card-btn-save' type='submit' style='font-weight:bold;color:white;'  ><i class='ri-arrow-down-line'><label id='present{{$key}}' style='color:black;'  ><i class='ri-save-line'></i></label></i>Simpan</button>";
+
+       
+        $('#tombol_save_terlambat'+key_).html('');
+
+        $('#tombol_save_terlambat'+key_).append(set_tombol_terkunci);
+
+
+    }
+
+   
+
+
+
+
+
+ }
+
+
+
+
+
 
 
      
@@ -626,3 +749,12 @@ Index Of Script
 
 
 })(jQuery);
+
+
+
+
+
+
+
+
+

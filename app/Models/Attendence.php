@@ -15,7 +15,9 @@ class Attendence extends Model
         'date',
         'status',
         'keterangan',
-        'file_dokumen'
+        'file_dokumen',
+        'waktu_cetak',
+        
     ];
 
     public $sortable = [
@@ -23,15 +25,16 @@ class Attendence extends Model
         'employee_id',
         'date',
         'status',
+        
     ];
 
    
     protected $with = [
-        'employee',
+        'employee'
     ];
 
     public function employee(){
-        return $this->belongsTo(Employee::class, 'employee_id', 'id');
+        return $this->belongsTo(Employee::class, 'employee_id', 'id','photo');
     }
 
     public function getRouteKeyName()

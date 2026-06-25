@@ -9,7 +9,7 @@
   --black-color: hsl(75, 4%, 18%);
   --text-color: hsl(75, 4%, 12%);
   --text-color-light: hsl(75, 4%, 75%);
-  --body-color: hsl(0, 0%, 75%);
+  --body-color: hsl(0, 0%, 99.2%);
   --container-color: hsl(75, 15%, 85%);
 
   /*========== Font and typography ==========*/
@@ -155,7 +155,7 @@ body {
 @media screen and (min-width: 1024px) {
   .clock {
     width: 602px;
-    height: 306px;
+    height: 190px;
     border: 4px solid var(--black-color);
     box-shadow: 15px 15px 0 hsl(0, 0%, 65%), 
                 30px 30px 0 hsl(75, 4%, 18%), 

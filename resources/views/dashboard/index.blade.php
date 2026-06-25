@@ -177,7 +177,9 @@
                         <tr>
                             <td>{{ (($employees->currentPage() * 10) - 10) + $loop->iteration  }}</td>
                             <td>
-                                <img class="avatar-60 rounded" src="{{ $employee->photo ? asset('storage/employees/'.$employee->photo) : asset('assets/images/user/1.png') }}">
+
+                            
+                                <img class="avatar-60 rounded" src="{{ $employee->photo ? asset('assets/images/employees/'.$employee->photo) : asset('assets/images/user/1.png') }}">
                             </td>
                             <td>{{ $employee->name }}</td>
                             <td>{{ $employee->email }}</td>

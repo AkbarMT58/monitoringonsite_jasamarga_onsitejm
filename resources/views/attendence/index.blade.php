@@ -60,7 +60,7 @@ $waktu = date("Y-m-d");
 
 
                     
-                    <p class="mb-0">Silakan Absen Kehadiran </p>
+                <p class="mb-0">Silakan Absen Kehadiran </p>
 
                     <div class="clock">
             <div class="clock__circle">
@@ -77,13 +77,18 @@ $waktu = date("Y-m-d");
                      <span class="clock__month" id="date-month"></span>
                      <span class="clock__day" id="date-day"></span>
                      <span class="clock__year" id="date-year"></span>
+                      <span class="clock__year" id="date-year_" hidden></span>
+                      <span class="clock__year" id="date-tahun_" hidden></span>
                   </div>
                </div>
 
                <div class="clock__text">
                   <span class="clock__text-hour" id="text-hour"></span>
+                   <span class="clock__text-hour" id="text-hour_" hidden></span>
                   <span class="clock__text-minutes" id="text-minutes"></span>
+                  <span class="clock__text-minutes" id="text-minutes_" hidden></span>
                   <span class="clock__text-ampm" id="text-ampm"></span>
+                  <span class="clock__text-ampm" id="text-ampm_" hidden></span>
                </div>
             </div>
          </div>
@@ -167,12 +172,11 @@ $waktu = date("Y-m-d");
                     </thead>
                     <tbody class="ligth-body">
                         @forelse ($attendences as $attendence)
-
                         
                         <tr>
                             <td>{{ (($attendences->currentPage() * 10) - 10) + $loop->iteration  }}</td>
                           
-                            <td><i class="ri-time-line"></i><div id="date_today_{{$loop->iteration}}" >{{ $attendence->date }}</div> <br><br>waktu cetak: <div id="create_at_{{$loop->iteration}}" >{{$attendence->waktu_cetak}}</div></td>
+                            <td><i class="ri-time-line"></i><div id="date_today_{{$loop->iteration}}" >{{ $attendence->date }}</div> <br><br>waktu cetak: <div id="create_at_{{$loop->iteration}}" >{{$attendence->date}}</div></td>
                             <td id="status_{{$loop->iteration}}" ></td>
                           
                             <td>
@@ -253,9 +257,6 @@ document.getElementById('tanggal_sekarang').innerHTML = today_;
 //akses clock in toleransi di bawah 1 jam 
 
 
-
-
-
 let currentDate_ = new Date().toJSON().slice(0, 10);
 
 //  document.getElementById('datepicker_index').value+=currentDate_;
@@ -309,6 +310,8 @@ var time_live=document.getElementById('time').innerHTML;
 localStorage.setItem("real_time", time_live);
 
 var myRealTime = localStorage.getItem('real_time');
+
+console.log("lihat waktu realtime:",myRealTime);
 
 
 for(var a=1;a < totaldata_index;a++){
@@ -388,9 +391,9 @@ for(var b=1;b < totaldata_index;b++){
     let ambildate_tabel_i=document.getElementById('date_today_'+b).innerHTML;
     
 
-    console.log("lihat time i:",ambildata_timeby_i);
+    // console.log("lihat time i:",ambildata_timeby_i);
 
-    console.log("lihat date i:",ambildate_tabel_i);
+    // console.log("lihat date i:",ambildate_tabel_i);
 
     if(ambildate_tabel_i== date_today && ambildata_timeby_i <= "17:00:00"){
 

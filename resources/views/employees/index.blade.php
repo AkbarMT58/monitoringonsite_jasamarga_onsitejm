@@ -1,6 +1,92 @@
 @extends('dashboard.body.main')
 
 @section('container')
+
+
+<style>
+/* Basic styling */
+
+[type=checkbox] {
+  width: 2rem;
+  height: 2rem;
+  color: dodgerblue;
+  vertical-align: middle;
+  -webkit-appearance: none;
+  background: none;
+  border: 0;
+  outline: 0;
+  flex-grow: 0;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  transition: background 300ms;
+  cursor: pointer;
+}
+
+
+/* Pseudo element for check styling */
+
+[type=checkbox]::before {
+  content: "";
+  color: transparent;
+  display: block;
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+  border: 0;
+  background-color: transparent;
+  background-size: contain;
+  box-shadow: inset 0 0 0 1px #CCD3D8;
+}
+
+
+/* Checked */
+
+[type=checkbox]:checked {
+  background-color: currentcolor;
+}
+
+[type=checkbox]:checked::before {
+  box-shadow: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E %3Cpath d='M15.88 8.29L10 14.17l-1.88-1.88a.996.996 0 1 0-1.41 1.41l2.59 2.59c.39.39 1.02.39 1.41 0L17.3 9.7a.996.996 0 0 0 0-1.41c-.39-.39-1.03-.39-1.42 0z' fill='%23fff'/%3E %3C/svg%3E");
+}
+
+
+/* Disabled */
+
+[type=checkbox]:disabled {
+  background-color: #CCD3D8;
+  opacity: 0.84;
+  cursor: not-allowed;
+}
+
+
+/* IE */
+
+[type=checkbox]::-ms-check {
+  content: "";
+  color: transparent;
+  display: block;
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+  border: 0;
+  background-color: transparent;
+  background-size: contain;
+  box-shadow: inset 0 0 0 1px #CCD3D8;
+}
+
+[type=checkbox]:checked::-ms-check {
+  box-shadow: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E %3Cpath d='M15.88 8.29L10 14.17l-1.88-1.88a.996.996 0 1 0-1.41 1.41l2.59 2.59c.39.39 1.02.39 1.41 0L17.3 9.7a.996.996 0 0 0 0-1.41c-.39-.39-1.03-.39-1.42 0z' fill='%23fff'/%3E %3C/svg%3E");
+}
+
+
+
+
+
+</style>
+
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
@@ -69,21 +155,32 @@
                             <th>@sortablelink('phone')</th>
                             <th>@sortablelink('salary')</th>
                             <th>@sortablelink('city')</th>
+                            <th>@sortablelink('late absen')</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody class="ligth-body">
                         @forelse ($employees as $employee)
+
+                        
+                      <div hidden> {{ $key = $loop->iteration  }} </div>
+
                         <tr>
                             <td>{{ (($employees->currentPage() * 10) - 10) + $loop->iteration  }}</td>
                             <td>
-                                <img class="avatar-60 rounded" src="{{ $employee->photo ? asset('storage/employees/'.$employee->photo) : asset('assets/images/user/1.png') }}">
+                                <img class="avatar-60 rounded" src="{{ $employee->photo ? asset('assets/images/employees/'.$employee->photo) : asset('assets/images/user/1.png') }}">
                             </td>
                             <td>{{ $employee->name }}</td>
                             <td>{{ $employee->email }}</td>
                             <td>{{ $employee->phone }}</td>
                             <td>${{ $employee->salary }}</td>
                             <td>{{ $employee->city }}</td>
+                            <td>
+                                <div class="round">
+                                        <input type="checkbox"  id="myBtn_acc_absent{{$key}}" name="approved_late_absen"  @if($employee->acc_lead == 1){{'Checked'}}@else {{''}} @endif  />
+                                        <input type="text" id="id_emp{{$employee->id}}" value="{{$employee->id}}" hidden/>
+                                        <label for="checkbox"></label>
+                                    </div></td>
                             <td>
                                 <div class="d-flex align-items-center list-action">
                                     <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
@@ -117,5 +214,135 @@
     </div>
     <!-- Page end  -->
 </div>
+
+<script>
+
+const tot_employ='{{count($employees)}}';
+
+console.log("lihat data all:",tot_employ);
+
+
+for(var i=1; i <= tot_employ; i++){
+
+
+let isClicked = false;
+
+const btn = document.getElementById("myBtn_acc_absent"+i);
+//var url_current=document.URL;
+
+let id_=document.getElementById("id_emp"+i).value; 
+
+btn.onclick = function() {
+   isClicked = !isClicked; // Toggle the true/false 
+
+console.log("lihat id no:",id_);
+  
+   if (isClicked) {
+
+     btn.style.backgroundColor = "blue";
+     btn.value='0';
+
+     let input_acc_absen={
+        "acc_absen":'1',
+        "_token":"{{ csrf_token()}}",
+     };
+   
+
+    //ubah data acc lead ke 1
+    $.ajax({
+                    url: `/employees/`+ id_ +'/'+ 'update_late_absen',
+                    type: 'POST',
+                    data:input_acc_absen,
+                     headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                 
+                
+    success: function(response){
+                if(response.status=='200'){
+
+                    toastr.success('Data permintaan pengajuan atau absen terlambat sukses tersimpan!.Terima Kasih',{ fadeAway: 3000 });
+
+                   //location.href="/employees";
+
+                }
+
+                
+
+    }
+
+    });
+
+
+
+
+   } 
+  
+   else{
+
+    // let id_=document.getElementById("id_emp"+i).value; 
+
+   
+
+    let input_acc_absen={
+        "acc_absen":'0',
+         "_token":"{{ csrf_token()}}",
+      };
+
+    //var url_current=document.URL;
+
+      
+    // var tgl_id = url_current.split('/')[5];
+
+    // var tgl_now=tgl_id ;
+
+     btn.style.backgroundColor = "";
+     btn.value='1';
+     
+    //ubah data acc lead ke 1
+    
+    $.ajax({
+                    url: `/employees/` + id_ +'/'+ 'update_late_absen',
+
+                    type: 'POST',
+                    data:input_acc_absen,
+                     headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+                   
+
+  
+
+    success: function(response){
+                if(response.status=='200'){
+
+                 
+                    toastr.success('Data permintaan pengajuan atau absen terlambat sukses tersimpan!.Terima Kasih',{ fadeAway: 3000 });
+
+                   // location.href="/employees";
+
+                }
+         
+
+    }
+
+    });
+
+  }
+
+};
+
+
+
+
+
+}
+
+// function update_acc_terlambat() {
+//   alert("Hello! You clicked the button.");
+// }
+
+
+</script>
 
 @endsection

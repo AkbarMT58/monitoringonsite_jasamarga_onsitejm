@@ -138,7 +138,7 @@
             <div class="card card-block card-stretch card-height">
                 <div class="card-header d-flex align-items-center justify-content-between">
                     <div class="header-title">
-                        <h4 class="card-title">Grafik Performa Testing 16 Web</h4>
+                        <h4 class="card-title">Grafik ZAP 16 Web</h4>
                     </div>
                     <div class="card-header-toolbar d-flex align-items-center">
                         <div class="dropdown">

@@ -21,7 +21,7 @@
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/AngeloFaella/CircularProgressBar@1.0/circularProgressBar.css">
 
-        
+         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
         
          <!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
         <!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>  -->
@@ -86,7 +86,9 @@
 <script src=" https://cdn.jsdelivr.net/npm/rich-text-editor-vj@3.0.6/js/froala_editor.min.js "></script>
 <link href=" https://cdn.jsdelivr.net/npm/rich-text-editor-vj@3.0.6/css/froala_editor.min.css " rel="stylesheet">
 
-    
+     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     
 </body>
 </html>

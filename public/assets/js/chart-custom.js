@@ -5158,7 +5158,7 @@ if (jQuery("#editor").length) {
       ]
       }],
       title: {
-        text: "$45,78956",
+        text: "45,78956",
         align: "left"
       },
       xaxis: {

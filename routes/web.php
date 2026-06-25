@@ -24,6 +24,9 @@ use App\Http\Controllers\Dashboard\PengajuanCutiController;
 use App\Http\Controllers\Dashboard\SignaturesController;
 use App\Http\Controllers\Dashboard\TimesheetController;
 
+use App\Http\Controllers\Dashboard\DatabaseManagementController;
+use App\Http\Controllers\Dashboard\DaftarWebController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,6 +40,10 @@ use App\Http\Controllers\Dashboard\TimesheetController;
 
 Route::get('/', function () {
     return view('auth/login');
+});
+
+Route::get('/linkstorage', function () {
+    Artisan::call('storage:link');
 });
 
 
@@ -97,8 +104,20 @@ Route::middleware('auth')->group(function () {
     Route::get('cuti/send_email_atachment_jm/{id}/{id_cuti}/{kode_pt}', [PengajuanCutiController::class, 'sendEmailPDF']);
 
    
-
+  //daerah database management
   
+    Route::get('/database', [DatabaseManagementController::class,'index'])->middleware(['auth'])->name('database');
+    Route::get('/database/index', [DatabaseManagementController::class, 'create'])->name('database_index');
+    Route::get('/database/create_database', [DatabaseManagementController::class, 'create_tk'])->name('create_database');
+
+    Route::get('/database/backup/process', [DatabaseManagementController::class, 'backupDatabase'])->name('backup.process');
+    Route::get('/database/backup/progress', [DatabaseManagementController::class, 'getProgress'])->name('backup.progress');
+    Route::get('/database/backup/download/{id}', [DatabaseManagementController::class, 'downloadBackup'])->name('backup.download');
+    Route::delete('/database/backup/delete/{id}', [DatabaseManagementController::class, 'deleteBackup'])->name('backup.delete');
+
+    //daftar total web jm
+    Route::get('/database/daftarwebjm', [DatabaseManagementController::class,'read_masterdata_daftarwebjm'])->middleware(['auth'])->name('daftar_webjm');
+
 
     //signatures
     
@@ -113,6 +132,17 @@ Route::middleware('auth')->group(function () {
     Route::get('signatures/delete/{id}', [SignaturesController::class, 'hapus_signatures'])->name('signatures.destroy');
 
 
+    //daftar web jm
+    
+    Route::get('/webjm', [DaftarWebController::class,'index'])->middleware(['auth'])->name('webjm');
+    Route::get('/webjm/index', [DaftarWebController::class, 'create'])->name('daftarwebjm.index');
+    Route::get('/webjm/create_webjm', [DaftarWebController::class, 'create_webjm'])->name('create_webjm');
+    Route::get('/webjm/{id}/edit', [DaftarWebController::class, 'edit'])->name('webjm.edit');
+
+    Route::post('webjm/create_webjm/save', [DaftarWebController::class, 'daftarweb_simpan'])->name('create_webjm.save');
+    Route::post('webjm/create_webjm/update', [DaftarWebController::class, 'daftarweb_update'])->name('webjm.update');
+    Route::post('webjm/laporan_webjm', [DaftarWebController::class, 'webjm_report']);
+    Route::get('webjm/delete/{id}', [DaftarWebController::class, 'hapus_remove_daftarweb'])->name('webjm.destroy');
 
 
 
@@ -141,6 +171,9 @@ Route::middleware(['permission:supplier.menu'])->group(function () {
 // ====== EMPLOYEES ======
 Route::middleware(['permission:employee.menu'])->group(function () {
     Route::resource('/employees', EmployeeController::class);
+    
+    Route::post('employees/{id}/update_late_absen ', [EmployeeController::class, 'update_late_absen']);
+    
 });
 
 // ====== EMPLOYEE ATTENDENCE ======
@@ -153,17 +186,22 @@ Route::middleware(['permission:employee.menu'])->group(function () {
 // });
 
 
-Route::middleware(['permission:attendence.menu'])->group(function () {
-    Route::resource('/employee/attendence', AttendenceController::class)->except(['show', 'update', 'destroy']);
+    Route::middleware(['permission:attendence.menu'])->group(function () {
+    Route::resource('/employee/attendence', AttendenceController::class)->except(['show' ,'update', 'destroy']);
 
-    Route::post('employee/attendence/{tgl}/{id}/create_attendance_masuk', [AttendenceController::class, 'store']);
+    Route::post('employee/attendence/create_attendance_masuk_terlambat', [AttendenceController::class, 'store'])->name('attendences.save');
+    Route::post('employee/attendence/create_attendance_masuk_ontime', [AttendenceController::class, 'simpan_absen']);
+    
     Route::post('employee/attendence/{tgl}/{id}/update_attendance_masuk', [AttendenceController::class, 'update_attendance_masuk']);
     Route::post('employee/attendence/{tgl}/{id}/update_attendance', [AttendenceController::class, 'update_attendance']);
     Route::post('employee/attendence/{tgl}/{id}/update_terlambat', [AttendenceController::class, 'update_keterlambatan']);
+    Route::post('employee/attendence/{tgl}/update_alasan_sakit', [AttendenceController::class, 'update_alasan_sakit']);
+
+    
 
     Route::post('employee/attendence/{tgl}/{id}/update_reason_absen ', [AttendenceController::class, 'update_absent']);
     Route::post('employee/attendence/{tgl}/create_reason_absen ', [AttendenceController::class, 'create_absent']);
-
+    
    //time sheet work
     Route::get('/timesheet', [TimesheetController::class,'index'])->middleware(['auth'])->name('timesheet');
     Route::get('/timesheet/index', [TimesheetController::class, 'create'])->name('timesheet_index');
