@@ -31,12 +31,10 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
     --filename=composer \
     && chmod +x /usr/local/bin/composer
 
-WORKDIR /var/www/html
+WORKDIR /var/www/monitoringonsite_jasamarga_onsitejm
 
 # COPY DEPENDENCY FILES FIRST
 COPY composer.json composer.lock ./
-
-# RUN composer install --no-dev --no-autoloader --prefer-dist --no-interaction --no-scripts 
 
 RUN composer install \
     --no-dev \
@@ -46,7 +44,7 @@ RUN composer install \
     -vvv
 
 # Set permission
-RUN chown -R www-data:www-data /var/www \
+RUN chown -R www-data:www-data /var/www/monitoringonsite_jasamarga_onsitejm \
     && chmod -R 755 /var/www/storage
 
 
