@@ -45,27 +45,9 @@ RUN composer install \
 
 # Set permission
 RUN chown -R www-data:www-data /var/www/monitoringonsite_jasamarga_onsitejm \
-    && chmod -R 755 /var/www/storage
+    && chmod -R 755 /var/www/monitoringonsite_jasamarga_onsitejm/storage
 
 
-    
-
-# PHP CONFIG
-COPY docker/php.ini $PHP_INI_DIR/php.ini
-COPY docker/www.conf /usr/local/etc/php-fpm.d/www.conf
-COPY docker/deploy.conf /etc/nginx/conf.d/default.conf
-COPY docker/cronjob /etc/cron.d/cronjob
-
-# COPY APPLICATION CODE
-# COPY . .
-COPY app app
-COPY bootstrap bootstrap
-COPY config config
-COPY database database
-COPY public public
-COPY resources resources
-COPY routes routes
-COPY artisan artisan
 
 RUN php artisan package:discover --ansi
 
