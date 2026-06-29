@@ -43,9 +43,6 @@ RUN composer install \
     --optimize-autoloader 
 
 # Set permission
-RUN chown -R www-data:www-data /var/www/monitoringonsite_jasamarga_onsitejm \
-    && chmod -R 755 /var/www/monitoringonsite_jasamarga_onsitejm/storage
-
 
 
 RUN php artisan package:discover --ansi
