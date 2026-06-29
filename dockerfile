@@ -58,9 +58,9 @@ RUN mkdir -p storage/logs \
     bootstrap/cache
 
 # PERMISSIONS
-RUN chown -R www-data:www-data /var/www/monitoringonsite_jasamarga_onsitejm \
-    && chmod -R 775 storage bootstrap/cache
 
+RUN chown -R www-data:www-data /var/www/monitoringonsite_jasamarga_onsitejm \
+    && chmod -R 755 storage
 
 # Add cron job line to crontab
 RUN echo "* * * * * cd /var/www/monitoringonsite_jasamarga_onsitejm.git && php artisan schedule:run >> /dev/null 2>&1" | crontab -
