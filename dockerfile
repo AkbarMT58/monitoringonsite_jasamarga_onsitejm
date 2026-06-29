@@ -40,8 +40,7 @@ RUN composer install \
     --no-dev \
     --no-scripts \
     --prefer-dist \
-    --optimize-autoloader \
-    -vvv
+    --optimize-autoloader 
 
 # Set permission
 RUN chown -R www-data:www-data /var/www/monitoringonsite_jasamarga_onsitejm \
