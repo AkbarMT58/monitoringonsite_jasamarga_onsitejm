@@ -45,7 +45,8 @@ RUN composer install \
 # Set permission
 
 
-RUN php artisan package:discover --ansi
+
+RUN php artisan config:cache
 
 # Laravel runtime directories
 RUN mkdir -p storage/logs \
