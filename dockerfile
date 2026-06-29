@@ -42,11 +42,13 @@ RUN composer install \
     --prefer-dist \
     --optimize-autoloader 
 
-# Set permission
 
+# Expose the port Artisan serve uses
+EXPOSE 8000
 
+# Bind to 0.0.0.0 so it is accessible outside the container
+RUN CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
 
-RUN php artisan config:cache
 
 # Laravel runtime directories
 RUN mkdir -p storage/logs \
