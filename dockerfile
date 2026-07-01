@@ -36,10 +36,8 @@ WORKDIR /var/www/monitoringonsite_jasamarga_onsitejm
 # COPY DEPENDENCY FILES FIRST
 COPY composer.json composer.lock ./
 
-RUN composer install \
-    --no-dev \
-    --no-scripts \
-    --no-interaction 
+RUN composer install 
+  
 
 
 COPY . .
