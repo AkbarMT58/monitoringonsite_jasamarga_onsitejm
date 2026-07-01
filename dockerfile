@@ -45,6 +45,8 @@ RUN composer install \
 
 COPY . .
 
+RUN COMPOSER DUMP-AUTOLOAD --optimize
+
 
 # Expose the port Artisan serve uses
 EXPOSE 8000
