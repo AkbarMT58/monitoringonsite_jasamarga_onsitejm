@@ -43,6 +43,9 @@ RUN composer install \
     --optimize-autoloader 
 
 
+COPY . .
+
+
 # Expose the port Artisan serve uses
 EXPOSE 8000
 
