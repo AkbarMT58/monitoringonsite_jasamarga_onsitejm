@@ -36,13 +36,8 @@ WORKDIR /var/www/monitoringonsite_jasamarga_onsitejm
 # COPY DEPENDENCY FILES FIRST
 COPY composer.json composer.lock ./
 
-RUN composer install 
+RUN composer install --no-interaction --no-scripts
   
-
-
-COPY . .
-
-
 # Expose the port Artisan serve uses
 EXPOSE 8000
 
