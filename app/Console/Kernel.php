@@ -21,7 +21,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $backupController = new \App\Http\Controllers\Dashboard\DatabaseManagementController();
             $backupController->scheduledBackup();
-        })->'backup-' . now()->format('Y-m-d_H-i-s') . '.zip';
+        })->dailyAt('13:50')->timezone('Asia/Jakarta');
         
         // dailyAt('14:00')->timezone('Asia/Jakarta');
     }
