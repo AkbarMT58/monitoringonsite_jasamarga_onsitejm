@@ -16,12 +16,12 @@ class Kernel extends ConsoleKernel
 
          
         // Format it for a custom backup file name
-        $backupName = 'backup-' . now()->format('Y-m-d_H-i-s') . '.zip';
+        //$backupName = 'backup-' . now()->format('Y-m-d_H-i-s') . '.zip';
 
         $schedule->call(function () {
             $backupController = new \App\Http\Controllers\Dashboard\DatabaseManagementController();
             $backupController->scheduledBackup();
-        })->$backupName;
+        })->'backup-' . now()->format('Y-m-d_H-i-s') . '.zip';
         
         // dailyAt('14:00')->timezone('Asia/Jakarta');
     }
