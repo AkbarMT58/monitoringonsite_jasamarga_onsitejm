@@ -685,7 +685,7 @@ class DatabaseManagementController extends Controller
             // $dbName = env('DB_DATABASE', 'monitoring_onsite');
             // $dbUser = env('DB_USERNAME', 'root');
             // $dbPass = env('DB_PASSWORD', '');
-            // $backupPath = storage_path('app/backups/');
+             $backupPath = storage_path('app/backups/');
 
            for ($i = 0; $i < count($get_datawebjm); $i++) {
 
