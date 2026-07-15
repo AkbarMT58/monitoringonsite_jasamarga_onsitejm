@@ -16,6 +16,7 @@ class DaftarWebJM extends Model
         'id',
         'name_web',
         'name_database',
+        'type_database',
         'host',
         'username',
         'port',

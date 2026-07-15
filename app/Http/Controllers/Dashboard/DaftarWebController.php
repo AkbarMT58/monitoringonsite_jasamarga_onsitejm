@@ -63,103 +63,6 @@ class DaftarWebController extends Controller
       
     }
 
-    public function create_backup(Request $request){
-
-      try {
-            $backupHistory = DaftarWebJM::create([
-                'backup_name' => 'backup_' . date('Y-m-d_H-i-s') . '.sql',
-                'backup_path' => '',
-                'status' => 'processing',
-                'backup_started_at' => now(),
-            ]);
-
-            // Simpan progress ke session
-            session(['backup_progress' => 10]);
-            session(['backup_id' => $backupHistory->id]);
-
-            // Konfigurasi database
-            $dbHost = env('DB_HOST', '127.0.0.1');
-            $dbPort = env('DB_PORT', '3306');
-            $dbName = env('DB_DATABASE', 'monitoring_onsite');
-            $dbUser = env('DB_USERNAME', 'root');
-            $dbPass = env('DB_PASSWORD', '');
-            $backupPath = storage_path('app/backups/');
-
-            // Buat direktori backup jika belum ada
-            if (!File::exists($backupPath)) {
-                File::makeDirectory($backupPath, 0755, true);
-            }
-
-            session(['backup_progress' => 30]);
-
-            $backupFileName = $backupHistory->backup_name;
-            $backupFileFullPath = $backupPath . $backupFileName;
-
-            // Backup menggunakan mysqldump
-            $command = sprintf(
-                'mysqldump --user=%s --password=%s --host=%s --port=%s %s > %s 2>&1',
-                escapeshellarg($dbUser),
-                escapeshellarg($dbPass),
-                escapeshellarg($dbHost),
-                escapeshellarg($dbPort),
-                escapeshellarg($dbName),
-                escapeshellarg($backupFileFullPath)
-            );
-
-            session(['backup_progress' => 60]);
-
-            // Eksekusi command backup
-            $output = [];
-            $returnVar = null;
-            exec($command, $output, $returnVar);
-
-            session(['backup_progress' => 90]);
-
-            if ($returnVar === 0 && File::exists($backupFileFullPath)) {
-                // Hitung ukuran file
-                $fileSize = File::size($backupFileFullPath);
-                $fileSizeFormatted = $this->formatFileSize($fileSize);
-
-                // Hitung durasi backup
-                $duration = now()->diffInSeconds($backupHistory->backup_started_at);
-
-                // Update history backup
-                $backupHistory->update([
-                    'backup_path' => 'backups/' . $backupFileName,
-                    'file_size' => $fileSizeFormatted,
-                    'status' => 'success',
-                    'backup_completed_at' => now(),
-                    'backup_duration_seconds' => $duration
-                ]);
-
-                session(['backup_progress' => 100]);
-                
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Backup database berhasil!',
-                    'backup_id' => $backupHistory->id
-                ]);
-            } else {
-                throw new \Exception('Gagal melakukan backup: ' . implode("\n", $output));
-            }
-
-        } catch (\Exception $e) {
-            if (isset($backupHistory)) {
-                $backupHistory->update([
-                    'status' => 'failed',
-                    'error_message' => $e->getMessage(),
-                    'backup_completed_at' => now()
-                ]);
-            }
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Error: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
-
 
     function daftarweb_simpan(Request $request){
 
@@ -221,7 +124,8 @@ class DaftarWebController extends Controller
                     "name_web"=>$request->nama_web,
                     "name_database"=>$request->nama_database,
                     "host"=>$request->nama_host,
-                     "username"=>$request->username,
+                    "port"=>$request->port,
+                    "username"=>$request->username,
                     "password"=>$request->nama_password,
                     "status"=>$request->status,
                     "updated_at"=>$waktu,

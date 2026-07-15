@@ -334,6 +334,8 @@ class DatabaseManagementController extends Controller
             $db_Name=$get_datawebjm[$i]['name_database'];
             $db_User =$get_datawebjm[$i]['username'];
             $db_Pass =$get_datawebjm[$i]['password'];
+            $db_type=$get_datawebjm[$i]['type_database'];
+
 
              date_default_timezone_set("Asia/Jakarta");
              $waktu = date("Y-m-d_H-i-s");
@@ -372,6 +374,53 @@ class DatabaseManagementController extends Controller
 
             $backupFileName = $backupHistory->backup_name;
             $backupFileFullPath = $backupPath . $backupFileName;
+
+            if($db_type=='pgsql'){
+
+            
+             $command=sprintf('pg_dump --host=%s --port=%s --username=%s  -F c -b -v -f %s %s',
+              escapeshellarg($dbHost),
+              escapeshellarg($dbPort),
+              escapeshellarg($db_User),
+              escapeshellarg($backupFileFullPath),
+              escapeshellarg($dbName)
+             
+             );
+             session(['backup_progress' => 60]);
+
+            // Eksekusi command backup
+            $output = [];
+            $returnVar = null;
+            exec($command, $output, $returnVar);
+
+            session(['backup_progress' => 90]);
+
+            if ($returnVar === 0 && File::exists($backupFileFullPath)) {
+                // Hitung ukuran file
+                $fileSize = File::size($backupFileFullPath);
+                $fileSizeFormatted = $this->formatFileSize($fileSize);
+
+                // Hitung durasi backup
+                $duration = now()->diffInSeconds($backupHistory->backup_started_at);
+               
+                // Update history backup
+                $backupHistory->update([
+                    'app_id'=>$get_datawebjm[$i]['id'],
+                    'backup_path' => 'backups/' . $backupFileName,
+                    'file_size' => $fileSizeFormatted,
+                    'status' => 'success',
+                    'backup_completed_at' => now(),
+                    'backup_duration_seconds' => $duration
+                ]);
+                
+                session(['backup_progress' => 100]);
+
+               
+            
+            } 
+
+
+            }else{
 
             // Backup menggunakan mysqldump
             $command = sprintf(
@@ -416,21 +465,12 @@ class DatabaseManagementController extends Controller
                 
                 session(['backup_progress' => 100]);
 
+            } 
 
-                //  return response()->json([
-                //     'success' => true,
-                //     //  'data'=> $databackup,
-                //     'message' => 'Backup database berhasil!',
-                //      'backup_id' => $backupHistory->id
-                // ]);
 
+            }
 
         
-            
-            } 
-            
-             
-            
             }
            
              
@@ -456,10 +496,10 @@ class DatabaseManagementController extends Controller
             $db_Name=$get_datawebjm[$i]['name_database'];
             $db_User =$get_datawebjm[$i]['username'];
             $db_Pass =$get_datawebjm[$i]['password'];
+            $db_type=$get_datawebjm[$i]['type_database'];
 
              date_default_timezone_set("Asia/Jakarta");
              $waktu = date("Y-m-d_H-i-s");
-
 
              $databackup=[
                 'app_id'=>$db_backup_id,
@@ -468,8 +508,6 @@ class DatabaseManagementController extends Controller
                 'status' => 'processing',
                 'backup_started_at' => now(),
             ];
-
-
 
              $backupHistory = BackupHistory::create($databackup);
 
@@ -494,6 +532,53 @@ class DatabaseManagementController extends Controller
 
             $backupFileName = $backupHistory->backup_name;
             $backupFileFullPath = $backupPath . $backupFileName;
+
+            // Backup menggunakan pgsql
+             if($db_type=='pgsql'){
+
+             $command=sprintf('pg_dump --host=%s --port=%s --username=%s  -F c -b -v -f %s %s',
+              escapeshellarg($dbHost),
+              escapeshellarg($dbPort),
+              escapeshellarg($db_User),
+              escapeshellarg($backupFileFullPath),
+              escapeshellarg($dbName)
+             
+             );
+             session(['backup_progress' => 60]);
+
+            // Eksekusi command backup
+            $output = [];
+            $returnVar = null;
+            exec($command, $output, $returnVar);
+
+            session(['backup_progress' => 90]);
+
+            if ($returnVar === 0 && File::exists($backupFileFullPath)) {
+                // Hitung ukuran file
+                $fileSize = File::size($backupFileFullPath);
+                $fileSizeFormatted = $this->formatFileSize($fileSize);
+
+                // Hitung durasi backup
+                $duration = now()->diffInSeconds($backupHistory->backup_started_at);
+               
+                // Update history backup
+                $backupHistory->update([
+                    'app_id'=>$get_datawebjm[$i]['id'],
+                    'backup_path' => 'backups/' . $backupFileName,
+                    'file_size' => $fileSizeFormatted,
+                    'status' => 'success',
+                    'backup_completed_at' => now(),
+                    'backup_duration_seconds' => $duration
+                ]);
+                
+                session(['backup_progress' => 100]);
+
+               
+            
+            } 
+
+
+            }else{
 
             // Backup menggunakan mysqldump
             $command = sprintf(
@@ -537,14 +622,14 @@ class DatabaseManagementController extends Controller
                 
                 session(['backup_progress' => 100]);
 
-                //  return response()->json([
-                //     'success' => true,
-                //      'data'=> $databackup,
-                //     'message' => 'Backup database berhasil!',
-                //      'backup_id' => $backupHistory->id
-                // ]);
+               
             
             } 
+
+
+            }
+
+            
             
           
             
@@ -672,21 +757,12 @@ class DatabaseManagementController extends Controller
             
             $get_datawebjm=DaftarWebJM::orderBy('created_at', 'desc')->get();
             // Simulasi request untuk backup
-            $backupHistory = BackupHistory::create([
-                'backup_name' => 'scheduled_backup_' . date('Y-m-d_H-i-s') . '.sql',
-                'backup_path' => '',
-                'status' => 'processing',
-                'backup_started_at' => now(),
-            ]);
+            date_default_timezone_set("Asia/Jakarta");
+             $waktu = date("Y-m-d_H-i-s");
 
-            // Konfigurasi database
-            // $dbHost = env('DB_HOST', 'localhost');
-            // $dbPort = env('DB_PORT', '3306');
-            // $dbName = env('DB_DATABASE', 'monitoring_onsite');
-            // $dbUser = env('DB_USERNAME', 'root');
-            // $dbPass = env('DB_PASSWORD', '');
-             $backupPath = storage_path('app/backups/');
+            //  dd($get_datawebjm);
 
+        
            for ($i = 0; $i < count($get_datawebjm); $i++) {
 
             $db_App=$get_datawebjm[$i]['name_web'];
@@ -696,6 +772,22 @@ class DatabaseManagementController extends Controller
             $db_Name=$get_datawebjm[$i]['name_database'];
             $db_User =$get_datawebjm[$i]['username'];
             $db_Pass =$get_datawebjm[$i]['password'];
+            $db_type=$get_datawebjm[$i]['type_database'];
+
+            // Konfigurasi database
+            $dbHost = $db_HOST;
+            $dbPort = $db_PORT;
+            $dbName = $db_Name;
+            $dbUser = $db_User;
+            $dbPass = $db_Pass;
+            $backupPath = storage_path('app/backups/');
+            
+             $backupHistory = BackupHistory::create([
+                'backup_name' => 'scheduled_backup_' .$db_App .'_' .$waktu . '.sql',
+                'backup_path' => '',
+                'status' => 'processing',
+                'backup_started_at' => now(),
+            ]);
 
 
             if (!File::exists($backupPath)) {
@@ -705,12 +797,19 @@ class DatabaseManagementController extends Controller
             $backupFileName = $backupHistory->backup_name;
             $backupFileFullPath = $backupPath . $backupFileName;
 
+            if($db_type== 'pgsql'){
+
+
+            }else{
+
+
+            }
+
             $command = sprintf(
-                'mysqldump --user=%s --password=%s --host=%s --port=%s %s > %s 2>&1',
+                 'mysqldump --user=%s --password=%s --host=%s %s > %s',
                 escapeshellarg($dbUser),
                 escapeshellarg($dbPass),
                 escapeshellarg($dbHost),
-                escapeshellarg($dbPort),
                 escapeshellarg($dbName),
                 escapeshellarg($backupFileFullPath)
             );

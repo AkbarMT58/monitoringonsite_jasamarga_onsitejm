@@ -55,7 +55,7 @@ RUN chown -R www-data:www-data /var/www/monitoringonsite_jasamarga_onsitejm \
     && chmod -R 755 storage
 
 # Add cron job line to crontab
-RUN echo "* * * * * cd /var/www/monitoringonsite_jasamarga_onsitejm && php artisan schedule:run >> /dev/null 2>&1" | crontab -
+RUN echo "* * * * * cd /var/www/monitoringonsite_jasamarga_onsitejm schedule:run >> /dev/null 2>&1" | crontab -
 
 # Entrypoint script to start PHP-FPM and Cron
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh

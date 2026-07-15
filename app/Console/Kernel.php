@@ -5,6 +5,8 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
+use App\Http\Controllers\Dashboard\DatabaseManagementController;
+
 class Kernel extends ConsoleKernel
 {
     /**
@@ -12,19 +14,31 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-         // Backup setiap jam 2 pagi
-
          
-        // Format it for a custom backup file name
-        //$backupName = 'backup-' . now()->format('Y-m-d_H-i-s') . '.zip';
+        // $schedule->call(function () {
+        //     $backupController = new \App\Http\Controllers\Dashboard\DatabaseManagementController();
+        //     $backupController->scheduledBackup();
+        // })->dailyAt('15:28')->timezone('Asia/Jakarta')
+        //  ->appendOutputTo(storage_path('logs/backup_onsite.log'));
 
-        $schedule->call(function () {
-            $backupController = new \App\Http\Controllers\Dashboard\DatabaseManagementController();
-            $backupController->scheduledBackup();
-        })->dailyAt('14:03')->timezone('Asia/Jakarta');
-        
-        // dailyAt('14:00')->timezone('Asia/Jakarta');
+
+          $schedule->call(function () {
+            $controller = app(DatabaseManagementController::class); 
+            // Resolve from container
+            $controller->scheduledBackup();      
+           
+       // Execute the function
+        })->everyMinute(); // Set your preferred frequenc
+
+        //  dd($schedule);
+
+     
+  
+       
     }
+
+    
+
 
     /**
      * Register the commands for the application.
